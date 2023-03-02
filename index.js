@@ -32,6 +32,7 @@ chatButtonIcon.style.alignItems = 'center'
 chatButtonIcon.style.justifyContent = 'center'
 chatButtonIcon.style.width = '100%'
 chatButtonIcon.style.height = '100%'
+chatButtonIcon.style.zIndex = '2147483647'
 
 // add the chat button icon to the chat button element
 chatButtonIcon.innerHTML = CHAT_BUTTON_ICON
@@ -64,6 +65,7 @@ chat.style.backgroundColor = '#fff'
 chat.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
 chat.style.display = 'none'
 chat.style.border = '1px solid #D5D4D5'
+chat.style.zIndex = '2147483647'
 
 document.body.appendChild(chat)
 
