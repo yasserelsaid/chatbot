@@ -59,8 +59,9 @@ chat.style.flexDirection = 'column'
 chat.style.justifyContent = 'space-between'
 chat.style.bottom = '80px'
 chat.style.right = '20px'
-chat.style.width = '400px'
-chat.style.height = '600px'
+chat.style.width = '90vw'
+chat.style.height = '80vh'
+
 chat.style.backgroundColor = '#fff'
 chat.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
 chat.style.display = 'none'
@@ -86,6 +87,23 @@ width="100%"
 height="100%"
 frameborder="0"
 ></iframe>`
+
+// Create a condition that targets viewports at least 768px wide
+const mediaQuery = window.matchMedia('(min-width: 550px)')
+
+function handleChatWindowSizeChange(e) {
+  // Check if the media query is true
+  if (e.matches) {
+    chat.style.height = '600px'
+    chat.style.width = '400px'
+  }
+}
+
+// Register event listener
+mediaQuery.addEventListener('change', handleChatWindowSizeChange)
+
+// Initial check
+handleChatWindowSizeChange(mediaQuery)
 
 // chat.appendChild()
 // const chatFooter = document.createElement('div')
