@@ -13,6 +13,7 @@ const CHAT_BUTTON_ICON = `
 // create the chat button element
 const chatButton = document.createElement('div')
 // apply styles to the chat button
+chatButton.setAttribute('id', 'chatbase-bubble-button')
 chatButton.style.position = 'fixed'
 chatButton.style.bottom = '20px'
 chatButton.style.right = '20px'
@@ -22,6 +23,7 @@ chatButton.style.borderRadius = CHAT_BUTTON_RADIUS + 'px'
 chatButton.style.backgroundColor = CHAT_BUTTON_BACKGROUND_COLOR
 chatButton.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
 chatButton.style.cursor = 'pointer'
+chatButton.style.zIndex = 999999999
 
 // create the chat button icon element
 const chatButtonIcon = document.createElement('div')
@@ -32,7 +34,7 @@ chatButtonIcon.style.alignItems = 'center'
 chatButtonIcon.style.justifyContent = 'center'
 chatButtonIcon.style.width = '100%'
 chatButtonIcon.style.height = '100%'
-chatButtonIcon.style.zIndex = '2147483647'
+chatButtonIcon.style.zIndex = 999999999
 
 // add the chat button icon to the chat button element
 chatButtonIcon.innerHTML = CHAT_BUTTON_ICON
@@ -52,9 +54,9 @@ chatButton.addEventListener('click', () => {
 })
 
 const chat = document.createElement('div')
+chat.setAttribute('id', 'chatbase-bubble-window')
 chat.style.position = 'fixed'
-chat.style.position = 'fixed'
-chat.style.display = 'flex'
+
 chat.style.flexDirection = 'column'
 chat.style.justifyContent = 'space-between'
 chat.style.bottom = '80px'
@@ -66,7 +68,7 @@ chat.style.backgroundColor = '#fff'
 chat.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
 chat.style.display = 'none'
 chat.style.border = '1px solid #D5D4D5'
-chat.style.zIndex = '2147483647'
+chat.style.zIndex = 999999999
 
 document.body.appendChild(chat)
 
