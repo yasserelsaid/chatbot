@@ -24,6 +24,14 @@ chatButton.style.backgroundColor = CHAT_BUTTON_BACKGROUND_COLOR
 chatButton.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
 chatButton.style.cursor = 'pointer'
 chatButton.style.zIndex = 999999999
+chatButton.style.transition = 'all .2s ease-in-out'
+
+chatButton.addEventListener('mouseenter', (event) => {
+  chatButton.style.transform = 'scale(1.05)'
+})
+chatButton.addEventListener('mouseleave', (event) => {
+  chatButton.style.transform = 'scale(1)'
+})
 
 // create the chat button icon element
 const chatButtonIcon = document.createElement('div')
@@ -61,14 +69,16 @@ chat.style.flexDirection = 'column'
 chat.style.justifyContent = 'space-between'
 chat.style.bottom = '80px'
 chat.style.right = '20px'
-chat.style.width = '90vw'
-chat.style.height = '80vh'
+chat.style.width = '85vw'
+chat.style.height = '70vh'
 
 chat.style.backgroundColor = '#fff'
 chat.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
 chat.style.display = 'none'
 chat.style.border = '1px solid #D5D4D5'
+chat.style.borderRadius = '10px'
 chat.style.zIndex = 999999999
+chat.style.padding = '5px'
 
 document.body.appendChild(chat)
 
