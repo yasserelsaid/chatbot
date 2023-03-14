@@ -92,9 +92,7 @@ document.body.appendChild(chat)
 // chat.appendChild(chatBody)
 
 chat.innerHTML = `<iframe
-src="https://www.chatbase.co/chatbot-iframe/${scriptTag.getAttribute(
-  'data-chatbotId'
-)}"
+src="https://www.chatbase.co/chatbot-iframe/${scriptTag.id}"
 width="100%"
 height="100%"
 frameborder="0"
