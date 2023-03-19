@@ -72,13 +72,12 @@ chat.style.right = '20px'
 chat.style.width = '85vw'
 chat.style.height = '70vh'
 
-chat.style.backgroundColor = '#fff'
 chat.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
 chat.style.display = 'none'
-chat.style.border = '1px solid #D5D4D5'
 chat.style.borderRadius = '10px'
 chat.style.zIndex = 999999999
-chat.style.padding = '5px'
+
+chat.style.overflow = 'hidden'
 
 document.body.appendChild(chat)
 
