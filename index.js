@@ -69,7 +69,8 @@ chat.style.bottom = '80px'
 chat.style.right = '20px'
 chat.style.width = '85vw'
 chat.style.height = '70vh'
-chat.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
+chat.style.boxShadow =
+  'rgba(150, 150, 150, 0.15) 0px 6px 24px 0px, rgba(150, 150, 150, 0.15) 0px 0px 0px 1px'
 chat.style.display = 'none'
 chat.style.borderRadius = '10px'
 chat.style.zIndex = 999999999
