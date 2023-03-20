@@ -103,7 +103,7 @@ handleChatWindowSizeChange(mediaQuery)
 
 const getChatButtonColor = async () => {
   const response = await fetch(
-    `http://localhost:3000/api/get-chatbot-button-color?chatbotId=${scriptTag.id}`,
+    `https://www.chatbase.co/api/get-chatbot-button-color?chatbotId=${scriptTag.id}`,
     {
       method: 'GET',
       headers: {
