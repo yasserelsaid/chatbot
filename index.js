@@ -47,7 +47,6 @@ chatButtonIcon.innerHTML = CHAT_BUTTON_ICON
 chatButton.appendChild(chatButtonIcon)
 
 // add the chat button to the page
-document.body.appendChild(chatButton)
 
 // toggle the chat component when the chat button is clicked
 chatButton.addEventListener('click', () => {
@@ -101,3 +100,21 @@ mediaQuery.addEventListener('change', handleChatWindowSizeChange)
 
 // Initial check
 handleChatWindowSizeChange(mediaQuery)
+
+const getChatButtonColor = async () => {
+  const response = await fetch(
+    `http://localhost:3000/api/get-chatbot-button-color?chatbotId=${scriptTag.id}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    }
+  )
+
+  const data = await response.json()
+  chatButton.style.backgroundColor = data.color || CHAT_BUTTON_BACKGROUND_COLOR
+  document.body.appendChild(chatButton)
+}
+
+getChatButtonColor()
