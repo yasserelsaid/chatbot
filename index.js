@@ -3,9 +3,16 @@ const CHAT_BUTTON_RADIUS = CHAT_BUTTON_SIZE / 2 // radius of the chat button in 
 const CHAT_BUTTON_BACKGROUND_COLOR = 'black' // background color of the chat button
 const scriptTag = document.currentScript
 const CHAT_BUTTON_ICON = `
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 2H4C2.9 2 2 2.9 2 4V22L6 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2ZM20 16H6L4 18V4H20V16Z" fill="#FFFFFF"/>
-  </svg>
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#FFFFFF" width="24" height="24">
+<path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+</svg>
+
+`
+
+const CHAT_BUTTON_CLOSE_ICON = `
+<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#FFFFFF" width="24" height="24">
+  <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+</svg>
 `
 
 // create the chat button element
@@ -44,6 +51,7 @@ chatButtonIcon.style.zIndex = 999999999
 
 // add the chat button icon to the chat button element
 chatButtonIcon.innerHTML = CHAT_BUTTON_ICON
+
 chatButton.appendChild(chatButtonIcon)
 
 // add the chat button to the page
@@ -53,8 +61,10 @@ chatButton.addEventListener('click', () => {
   // toggle the chat component
   if (chat.style.display === 'none') {
     chat.style.display = 'flex'
+    chatButtonIcon.innerHTML = CHAT_BUTTON_CLOSE_ICON
   } else {
     chat.style.display = 'none'
+    chatButtonIcon.innerHTML = CHAT_BUTTON_ICON
   }
 })
 
