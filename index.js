@@ -35,7 +35,7 @@ messageBubbles.style.cursor = 'pointer'
 messageBubbles.style.flexDirection = 'column'
 messageBubbles.style.gap = '50px'
 messageBubbles.style.marginLeft = '20px'
-messageBubbles.style.maxWidth = '85vw'
+messageBubbles.style.maxWidth = '70vw'
 messageBubbles.style.display = 'none'
 
 // Create the 'X' button element
@@ -117,7 +117,8 @@ chat.style.right = '20px'
 chat.style.width = '85vw'
 chat.style.height = '70vh'
 chat.style.boxShadow =
-  'rgba(150, 150, 150, 0.15) 0px 6px 24px 0px, rgba(150, 150, 150, 0.15) 0px 0px 0px 1px'
+  'rgba(150, 150, 150, 0.2) 0px 10px 30px 0px, rgba(150, 150, 150, 0.2) 0px 0px 0px 1px'
+
 chat.style.display = 'none'
 chat.style.borderRadius = '10px'
 chat.style.zIndex = 999999999
@@ -140,7 +141,7 @@ function handleChatWindowSizeChange(e) {
   if (e.matches) {
     chat.style.height = '600px'
     chat.style.width = '400px'
-    messageBubbles.style.maxWidth = '400px'
+    messageBubbles.style.maxWidth = '300px'
   }
 }
 
@@ -180,24 +181,31 @@ const getChatbotStyles = async () => {
   chatButtonIcon.innerHTML = getChatButtonIcon()
 
   initialMessages.forEach((message, index) => {
+    const messageElementContainer = document.createElement('div')
+    messageElementContainer.style.display = 'flex'
+    messageElementContainer.style.justifyContent = 'flex-end'
     const messageElement = document.createElement('div')
 
     messageElement.style.backgroundColor =
-      styles.theme === 'dark' ? '#3f3f46' : '#F4F4F5'
+      styles.theme === 'dark' ? 'black' : 'white'
 
     messageElement.style.color = styles.theme === 'dark' ? 'white' : 'black'
 
     messageElement.style.boxShadow =
-      'rgba(150, 150, 150, 0.15) 0px 6px 24px 0px, rgba(150, 150, 150, 0.15) 0px 0px 0px 1px'
+      'rgba(150, 150, 150, 0.2) 0px 10px 30px 0px, rgba(150, 150, 150, 0.2) 0px 0px 0px 1px'
+
     messageElement.style.borderRadius = '10px'
-    messageElement.style.padding = '10px'
-    messageElement.style.margin = '5px'
+    messageElement.style.padding = '20px'
+    messageElement.style.margin = '8px'
     messageElement.style.fontSize = '14px'
     messageElement.innerText = message
     messageElement.style.opacity = 0
+
     messageElement.style.transform = 'scale(0.9)'
     messageElement.style.transition = 'opacity 0.5s ease, transform 0.5s ease'
-    messageBubbles.appendChild(messageElement)
+
+    messageElementContainer.appendChild(messageElement)
+    messageBubbles.appendChild(messageElementContainer)
 
     if (styles.auto_open_chat_window_after >= 0) {
       setTimeout(() => {
@@ -212,8 +220,8 @@ const getChatbotStyles = async () => {
   // Apply the same color and shadow as the messages
   messageBubblesCloseButton.style.backgroundColor =
     styles.theme === 'dark'
-      ? darkenOrLightenColor('#3f3f46', 0.2)
-      : darkenOrLightenColor('#F4F4F5', 0.12)
+      ? darkenOrLightenColor('#000000', 0.2)
+      : darkenOrLightenColor('#FFFFFF', 0.12)
 
   messageBubblesCloseButton.style.color =
     styles.theme === 'dark' ? 'white' : 'black'
