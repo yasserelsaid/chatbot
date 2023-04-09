@@ -135,7 +135,7 @@ handleChatWindowSizeChange(mediaQuery)
 
 const getChatbotStyles = async () => {
   const response = await fetch(
-    `https://wwww.chatbase.co/api/get-chatbot-styles?chatbotId=${scriptTag.id}`,
+    `https://www.chatbase.co/api/get-chatbot-styles?chatbotId=${scriptTag.id}`,
     {
       method: 'GET',
       headers: {
