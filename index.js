@@ -210,9 +210,18 @@ const getChatbotStyles = async () => {
     if (styles.auto_open_chat_window_after >= 0) {
       setTimeout(() => {
         if (has_been_opened) return
-        if (index == 0) messageBubbles.style.display = 'block'
+        if (
+          sessionStorage.getItem('message_bubbles_have_been_shown') === 'true'
+        )
+          return
+        if (index === 0) {
+          messageBubbles.style.display = 'block'
+        }
         messageElement.style.opacity = 1
         messageElement.style.transform = 'scale(1)'
+        if (index === initialMessages.length - 1) {
+          sessionStorage.setItem('message_bubbles_have_been_shown', 'true')
+        }
       }, styles.auto_open_chat_window_after * 1000 + index * 100)
     }
   })
