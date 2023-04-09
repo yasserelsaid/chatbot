@@ -3,6 +3,8 @@ const CHAT_BUTTON_RADIUS = CHAT_BUTTON_SIZE / 2 // radius of the chat button in 
 const CHAT_BUTTON_BACKGROUND_COLOR = 'black' // background color of the chat button
 const scriptTag = document.currentScript
 let ICON_COLOR = 'white'
+let USER_ADDED_CHAT_ICON = null
+let has_been_opened = false
 
 // create the chat button element
 const chatButton = document.createElement('div')
@@ -21,7 +23,7 @@ chatButton.style.zIndex = 999999999
 chatButton.style.transition = 'all .2s ease-in-out'
 
 chatButton.addEventListener('mouseenter', (event) => {
-  chatButton.style.transform = 'scale(1.05)'
+  chatButton.style.transform = 'scale(1.08)'
 })
 chatButton.addEventListener('mouseleave', (event) => {
   chatButton.style.transform = 'scale(1)'
@@ -48,6 +50,7 @@ chatButton.appendChild(chatButtonIcon)
 chatButton.addEventListener('click', () => {
   // toggle the chat component
   if (chat.style.display === 'none') {
+    has_been_opened = true
     chat.style.display = 'flex'
     chatButtonIcon.innerHTML = getChatButtonCloseIcon()
   } else {
@@ -99,9 +102,9 @@ mediaQuery.addEventListener('change', handleChatWindowSizeChange)
 // Initial check
 handleChatWindowSizeChange(mediaQuery)
 
-const getChatButtonColor = async () => {
+const getChatbotStyles = async () => {
   const response = await fetch(
-    `https://www.chatbase.co/api/get-chatbot-button-color?chatbotId=${scriptTag.id}`,
+    `https://www.chatbase.co/api/get-chatbot-styles?chatbotId=${scriptTag.id}`,
     {
       method: 'GET',
       headers: {
@@ -110,16 +113,29 @@ const getChatButtonColor = async () => {
     }
   )
 
-  const data = await response.json()
+  const { styles } = await response.json()
 
-  chatButton.style.backgroundColor = data.color || CHAT_BUTTON_BACKGROUND_COLOR
+  if (styles.auto_open_chat_window_after >= 0) {
+    setTimeout(() => {
+      if (has_been_opened) return
+      chat.style.display = 'flex'
+      chatButtonIcon.innerHTML = getChatButtonCloseIcon()
+    }, styles.auto_open_chat_window_after * 1000)
+  }
+
+  chatButton.style.backgroundColor =
+    styles.button_color || CHAT_BUTTON_BACKGROUND_COLOR
+
   document.body.appendChild(chatButton)
 
+  if (styles.chat_icon) {
+    USER_ADDED_CHAT_ICON = `<img src="https://backend.chatbase.co/storage/v1/object/public/chat-icons/${styles.chat_icon}" style='width: 50px; height: 50px; border-radius: 25px;' />`
+  }
+
   const iconColor = getContrastingTextColor(
-    data.color || CHAT_BUTTON_BACKGROUND_COLOR
+    styles.button_color || CHAT_BUTTON_BACKGROUND_COLOR
   )
 
-  console.log('iconColor', iconColor)
   ICON_COLOR = iconColor
   chatButtonIcon.innerHTML = getChatButtonIcon()
 }
@@ -129,7 +145,9 @@ function getChatButtonIcon() {
   <svg id="chatIcon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.3" stroke="${ICON_COLOR}" width="24" height="24">
   <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 011.037-.443 48.282 48.282 0 005.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
   </svg>`
-  return CHAT_BUTTON_ICON
+
+  return USER_ADDED_CHAT_ICON || CHAT_BUTTON_ICON
+  // return USER_ADDED_CHAT_ICON
 }
 
 function getChatButtonCloseIcon() {
@@ -159,4 +177,4 @@ function getContrastingTextColor(bgColor) {
   return luminance > 0.5 ? 'black' : 'white'
 }
 
-getChatButtonColor()
+getChatbotStyles()
