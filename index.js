@@ -19,8 +19,29 @@ chatButton.style.borderRadius = CHAT_BUTTON_RADIUS + 'px'
 chatButton.style.backgroundColor = CHAT_BUTTON_BACKGROUND_COLOR
 chatButton.style.boxShadow = '0 4px 8px 0 rgba(0, 0, 0, 0.2)'
 chatButton.style.cursor = 'pointer'
-chatButton.style.zIndex = 999999999
+chatButton.style.zIndex = 999999998
 chatButton.style.transition = 'all .2s ease-in-out'
+
+const messageBubbles = document.createElement('div')
+messageBubbles.setAttribute('id', 'chatbase-message-bubbles')
+messageBubbles.style.position = 'fixed'
+messageBubbles.style.bottom = '80px'
+messageBubbles.style.right = '20px'
+messageBubbles.style.borderRadius = '10px'
+messageBubbles.style.fontFamily = 'sans-serif'
+messageBubbles.style.fontSize = '16px'
+messageBubbles.style.zIndex = 999999997
+messageBubbles.style.cursor = 'pointer'
+// messageBubbles.style.display = 'none'
+messageBubbles.style.flexDirection = 'column'
+messageBubbles.style.gap = '50px'
+messageBubbles.style.marginLeft = '20px'
+messageBubbles.style.maxWidth = '85vw'
+// messageBubbles.style.opacity = 0
+// messageBubbles.style.transform = 'scale(0.9)'
+// messageBubbles.style.transition = 'opacity 0.2s ease, transform 0.2s ease'
+
+document.body.appendChild(messageBubbles)
 
 chatButton.addEventListener('mouseenter', (event) => {
   chatButton.style.transform = 'scale(1.08)'
@@ -51,12 +72,21 @@ chatButton.addEventListener('click', () => {
   // toggle the chat component
   if (chat.style.display === 'none') {
     has_been_opened = true
+    messageBubbles.style.display = 'none'
     chat.style.display = 'flex'
+
     chatButtonIcon.innerHTML = getChatButtonCloseIcon()
   } else {
     chat.style.display = 'none'
     chatButtonIcon.innerHTML = getChatButtonIcon()
   }
+})
+
+messageBubbles.addEventListener('click', () => {
+  has_been_opened = true
+  messageBubbles.style.display = 'none'
+  chat.style.display = 'flex'
+  chatButtonIcon.innerHTML = getChatButtonCloseIcon()
 })
 
 const chat = document.createElement('div')
@@ -93,6 +123,7 @@ function handleChatWindowSizeChange(e) {
   if (e.matches) {
     chat.style.height = '600px'
     chat.style.width = '400px'
+    messageBubbles.style.maxWidth = '400px'
   }
 }
 
@@ -104,7 +135,7 @@ handleChatWindowSizeChange(mediaQuery)
 
 const getChatbotStyles = async () => {
   const response = await fetch(
-    `https://www.chatbase.co/api/get-chatbot-styles?chatbotId=${scriptTag.id}`,
+    `https://wwww.chatbase.co/api/get-chatbot-styles?chatbotId=${scriptTag.id}`,
     {
       method: 'GET',
       headers: {
@@ -113,15 +144,7 @@ const getChatbotStyles = async () => {
     }
   )
 
-  const { styles } = await response.json()
-
-  if (styles.auto_open_chat_window_after >= 0) {
-    setTimeout(() => {
-      if (has_been_opened) return
-      chat.style.display = 'flex'
-      chatButtonIcon.innerHTML = getChatButtonCloseIcon()
-    }, styles.auto_open_chat_window_after * 1000)
-  }
+  const { styles, initialMessages } = await response.json()
 
   chatButton.style.backgroundColor =
     styles.button_color || CHAT_BUTTON_BACKGROUND_COLOR
@@ -138,6 +161,35 @@ const getChatbotStyles = async () => {
 
   ICON_COLOR = iconColor
   chatButtonIcon.innerHTML = getChatButtonIcon()
+
+  initialMessages.forEach((message, index) => {
+    const messageElement = document.createElement('div')
+
+    messageElement.style.backgroundColor =
+      styles.theme === 'dark' ? '#3f3f46' : '#F4F4F5'
+
+    messageElement.style.color = styles.theme === 'dark' ? 'white' : 'black'
+
+    messageElement.style.boxShadow =
+      'rgba(150, 150, 150, 0.15) 0px 6px 24px 0px, rgba(150, 150, 150, 0.15) 0px 0px 0px 1px'
+    messageElement.style.borderRadius = '10px'
+    messageElement.style.padding = '10px'
+    messageElement.style.margin = '5px'
+    messageElement.style.fontSize = '14px'
+    messageElement.innerText = message
+    messageElement.style.opacity = 0
+    messageElement.style.transform = 'scale(0.9)'
+    messageElement.style.transition = 'opacity 0.5s ease, transform 0.5s ease'
+    messageBubbles.appendChild(messageElement)
+
+    if (styles.auto_open_chat_window_after >= 0) {
+      setTimeout(() => {
+        if (has_been_opened) return
+        messageElement.style.opacity = 1
+        messageElement.style.transform = 'scale(1)'
+      }, 1000 + index * 100)
+    }
+  })
 }
 
 function getChatButtonIcon() {
