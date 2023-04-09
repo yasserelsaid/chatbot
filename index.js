@@ -187,7 +187,7 @@ const getChatbotStyles = async () => {
         if (has_been_opened) return
         messageElement.style.opacity = 1
         messageElement.style.transform = 'scale(1)'
-      }, 1000 + index * 100)
+      }, styles.auto_open_chat_window_after * 1000 + index * 100)
     }
   })
 }
