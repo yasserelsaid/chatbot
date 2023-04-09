@@ -32,14 +32,31 @@ messageBubbles.style.fontFamily = 'sans-serif'
 messageBubbles.style.fontSize = '16px'
 messageBubbles.style.zIndex = 999999997
 messageBubbles.style.cursor = 'pointer'
-// messageBubbles.style.display = 'none'
 messageBubbles.style.flexDirection = 'column'
 messageBubbles.style.gap = '50px'
 messageBubbles.style.marginLeft = '20px'
 messageBubbles.style.maxWidth = '85vw'
-// messageBubbles.style.opacity = 0
-// messageBubbles.style.transform = 'scale(0.9)'
-// messageBubbles.style.transition = 'opacity 0.2s ease, transform 0.2s ease'
+messageBubbles.style.display = 'none'
+
+// Create the 'X' button element
+const messageBubblesCloseButton = document.createElement('div')
+messageBubblesCloseButton.innerHTML = '&#10005;'
+messageBubblesCloseButton.style.position = 'absolute'
+messageBubblesCloseButton.style.top = '-7px'
+messageBubblesCloseButton.style.right = '-7px'
+messageBubblesCloseButton.style.fontWeight = 'bold'
+messageBubblesCloseButton.style.display = 'none'
+messageBubblesCloseButton.style.justifyContent = 'center'
+messageBubblesCloseButton.style.alignItems = 'center'
+messageBubblesCloseButton.style.zIndex = 999999996
+messageBubblesCloseButton.style.width = '22px'
+messageBubblesCloseButton.style.height = '22px'
+messageBubblesCloseButton.style.borderRadius = '50%'
+messageBubblesCloseButton.style.textAlign = 'center'
+messageBubblesCloseButton.style.fontSize = '12px'
+messageBubblesCloseButton.style.cursor = 'pointer'
+
+messageBubbles.appendChild(messageBubblesCloseButton)
 
 document.body.appendChild(messageBubbles)
 
@@ -185,10 +202,39 @@ const getChatbotStyles = async () => {
     if (styles.auto_open_chat_window_after >= 0) {
       setTimeout(() => {
         if (has_been_opened) return
+        if (index == 0) messageBubbles.style.display = 'block'
         messageElement.style.opacity = 1
         messageElement.style.transform = 'scale(1)'
       }, styles.auto_open_chat_window_after * 1000 + index * 100)
     }
+  })
+
+  // Apply the same color and shadow as the messages
+  messageBubblesCloseButton.style.backgroundColor =
+    styles.theme === 'dark'
+      ? darkenOrLightenColor('#3f3f46', 0.2)
+      : darkenOrLightenColor('#F4F4F5', 0.12)
+
+  messageBubblesCloseButton.style.color =
+    styles.theme === 'dark' ? 'white' : 'black'
+
+  messageBubblesCloseButton.style.boxShadow =
+    'rgba(150, 150, 150, 0.15) 0px 6px 24px 0px, rgba(150, 150, 150, 0.15) 0px 0px 0px 1px'
+
+  messageBubbles.addEventListener('mouseenter', () => {
+    messageBubblesCloseButton.style.display = 'flex'
+  })
+
+  // Hide the 'X' button when leaving the messageBubbles
+  messageBubbles.addEventListener('mouseleave', () => {
+    messageBubblesCloseButton.style.display = 'none'
+  })
+
+  // Hide the messageBubbles component when the 'X' button is clicked
+  messageBubblesCloseButton.addEventListener('click', (event) => {
+    // prevent click event from bubbling up to the messageBubbles
+    event.stopPropagation()
+    messageBubbles.style.display = 'none'
   })
 }
 
@@ -227,6 +273,46 @@ function getContrastingTextColor(bgColor) {
 
   // Return the appropriate text color based on the luminance value
   return luminance > 0.5 ? 'black' : 'white'
+}
+
+function darkenOrLightenColor(color, percentage) {
+  // Ensure the input is in the format #RRGGBB
+  if (color.charAt(0) === '#') {
+    color = color.substr(1)
+  }
+
+  const getColorValue = (value) => {
+    // Clamp the value between 0 and 255
+    return Math.min(255, Math.max(0, value))
+  }
+
+  // Convert the input color to RGB
+  const r = parseInt(color.substr(0, 2), 16)
+  const g = parseInt(color.substr(2, 2), 16)
+  const b = parseInt(color.substr(4, 2), 16)
+
+  // Calculate the luminance value using the WCAG formula
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+
+  // Determine whether the color is light or dark
+  const isLight = luminance > 0.5
+
+  // Calculate the adjustment value
+  const adjustment = isLight ? -1 * Math.abs(percentage) : Math.abs(percentage)
+
+  // Adjust the color values
+  const newR = getColorValue(r + Math.round(255 * adjustment))
+  const newG = getColorValue(g + Math.round(255 * adjustment))
+  const newB = getColorValue(b + Math.round(255 * adjustment))
+
+  // Convert the adjusted color values back to the hex format
+  const newColor =
+    '#' +
+    newR.toString(16).padStart(2, '0') +
+    newG.toString(16).padStart(2, '0') +
+    newB.toString(16).padStart(2, '0')
+
+  return newColor
 }
 
 getChatbotStyles()
