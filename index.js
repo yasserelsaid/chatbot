@@ -26,7 +26,6 @@ const messageBubbles = document.createElement('div')
 messageBubbles.setAttribute('id', 'chatbase-message-bubbles')
 messageBubbles.style.position = 'fixed'
 messageBubbles.style.bottom = '80px'
-messageBubbles.style.right = '20px'
 messageBubbles.style.borderRadius = '10px'
 messageBubbles.style.fontFamily = 'sans-serif'
 messageBubbles.style.fontSize = '16px'
@@ -113,7 +112,6 @@ chat.style.position = 'fixed'
 chat.style.flexDirection = 'column'
 chat.style.justifyContent = 'space-between'
 chat.style.bottom = '80px'
-chat.style.right = '20px'
 chat.style.width = '85vw'
 chat.style.height = '70vh'
 chat.style.boxShadow =
@@ -167,6 +165,22 @@ const getChatbotStyles = async () => {
   chatButton.style.backgroundColor =
     styles.button_color || CHAT_BUTTON_BACKGROUND_COLOR
 
+  if (styles.align_chat_button === 'left') {
+    chatButton.style.left = '20px'
+    chatButton.style.right = 'unset'
+    chat.style.left = '20px'
+    chat.style.right = 'unset'
+    messageBubbles.style.left = '20px'
+    messageBubbles.style.right = 'unset'
+  } else {
+    chatButton.style.right = '20px'
+    chatButton.style.left = 'unset'
+    chat.style.right = '20px'
+    chat.style.left = 'unset'
+    messageBubbles.style.right = '20px'
+    messageBubbles.style.left = 'unset'
+  }
+
   document.body.appendChild(chatButton)
 
   if (styles.chat_icon) {
@@ -183,7 +197,8 @@ const getChatbotStyles = async () => {
   initialMessages.forEach((message, index) => {
     const messageElementContainer = document.createElement('div')
     messageElementContainer.style.display = 'flex'
-    messageElementContainer.style.justifyContent = 'flex-end'
+    messageElementContainer.style.justifyContent =
+      styles.align_chat_button === 'left' ? 'flex-start' : 'flex-end'
     const messageElement = document.createElement('div')
 
     messageElement.style.backgroundColor =
